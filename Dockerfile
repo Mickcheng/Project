@@ -1,23 +1,15 @@
 FROM python:3.6
 
-WORKDIR C:/
+WORKDIR /app
 
-RUN mkdir ./dataengineering
-RUN mkdir ./dataengineering/model
-
-ENV MODEL_DIR=/C:/dataengineering/model
-ENV MODEL_FILE=lr.joblib
-ENV METADATA_FILE =metadata.json
-
+ENV FLASK_APP=app.py
 
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY Tweets.csv .
+COPY . .
 
-COPY docker-ml.py .
-COPY docker-ml-inference.py .
+EXPOSE 5000
 
-RUN python docker-ml.py
-RUN python docker-ml-inference.py
+CMD ["python", "app.py"]

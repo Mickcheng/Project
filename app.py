@@ -19,16 +19,17 @@ def get_sentiment(sentences):
 	# Run inference
 	print("Scoring observations...")
 	y_pred = clf.predict(sentences)
-	print(y_pred)
+	return (y_pred)
 
-
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-	if request.method == 'POST':	
-		text = request.form['sentences']
-		return get_sentiment(text)
+	return render_template("index.html")
 
+@app.route('/result', methods=['POST']
+	result = request.form
+	text = result['sentences']
+	sent = get_sentiment(text)
+	return render_template("resultat.html", sentiment = sent)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0')
