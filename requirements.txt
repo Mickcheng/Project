@@ -1,4 +1,6 @@
-flask
+joblib
 matplotlib
 numpy
 scikit-learn
+nltk
+pandas
