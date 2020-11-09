@@ -22,6 +22,11 @@ from nltk.tokenize import WordPunctTokenizer
 from nltk.corpus import stopwords
 from nltk.corpus import wordnet
 from sklearn.linear_model import LogisticRegression
+from joblib import load
+import joblib
+import pickle
+
+
 
 
 MODEL_DIR = os.environ["MODEL_DIR"]
@@ -91,6 +96,11 @@ metadata = {
 		"train_acc_score": train_acc,
 		"test_acc_score":test_acc
 }
+
+
+#pickle.dump(tfidf_vect, open("tfidf_vect.pkl", "wb"))
+joblib.dump(tfidf_vect, open("tfidf_vect.pkl", "wb"))
+
 print("serializing metadata to {}".format(METADATA_PATH))
 dump(lr, MODEL_PATH)
 
