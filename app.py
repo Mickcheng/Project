@@ -67,6 +67,8 @@ def get_sentiment(sentences):
 	print("Scoring observations...")
 	y_pred = lr.predict(sentences_tfidf)
 	return (y_pred)
+	
+
 
 @app.route('/')
 def index():
