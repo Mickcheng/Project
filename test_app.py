@@ -23,7 +23,7 @@ class FlaskTests(unittest.TestCase):
 		
 		responce = requests.get('http://localhost:5000',data=self.params)
 		self.assertEqual(responce.status_code, 200)
-		print('Payload:\n{}'.format(responce.text))
+		
 		
 	
 	
