@@ -29,14 +29,15 @@ import pickle
 
 
 
+
 MODEL_DIR = os.environ["MODEL_DIR"]
 MODEL_FILE = os.environ["MODEL_FILE"]
 METADATA_FILE = os.environ["METADATA_FILE"]
 MODEL_PATH = os.path.join(MODEL_DIR,MODEL_FILE)
 METADATA_PATH = os.path.join(MODEL_DIR, METADATA_FILE)
 print("loading dataset...")
-df = pd.read_csv("Tweets.csv")
-new_df = df[['text','airline_sentiment']]
+df = pd.read_csv("Tweets_part.csv")
+new_df = df[['text','label']]
 
 tokenizer = nltk.RegexpTokenizer(r"\w+")
 new_df['text'] = new_df['text'].apply(lambda x: tokenizer.tokenize(x.lower()))
@@ -70,7 +71,7 @@ for index,entry in enumerate(new_df['text']):
     new_df.loc[index,'words'] = str(words)
 	
 
-train_x, test_x, train_y, test_y = model_selection.train_test_split(new_df['words'],new_df['airline_sentiment'],test_size=0.2)
+train_x, test_x, train_y, test_y = model_selection.train_test_split(new_df['words'],new_df['label'],test_size=0.2)
 
 encoder = LabelEncoder()
 train_y_encoded = encoder.fit_transform(train_y)
@@ -82,15 +83,16 @@ train_x_tfidf = tfidf_vect.transform(train_x)
 test_x_tfidf = tfidf_vect.transform(test_x)
 
 
-params = {"random_state":25, "solver":"lbfgs", "max_iter":1000,"multi_class":"multinomial"}
-lr=LogisticRegression(**params)
+params = {"C":1.0, "kernel":"linear", "degree":3,"gamma":"auto"}
+SVM=svm.SVC(**params)
 
-lr.fit(train_x_tfidf,train_y)
-pred_train=lr.predict(train_x_tfidf)
-pred_test=lr.predict(test_x_tfidf)
+SVM.fit(train_x_tfidf,train_y)
+pred_train=SVM.predict(train_x_tfidf)
+pred_test=SVM.predict(test_x_tfidf)
 
 train_acc = accuracy_score(train_y,pred_train)
 test_acc = accuracy_score(test_y,pred_test)
+
 
 metadata = {
 		"train_acc_score": train_acc,
@@ -102,7 +104,7 @@ metadata = {
 joblib.dump(tfidf_vect, open("tfidf_vect.pkl", "wb"))
 
 print("serializing metadata to {}".format(METADATA_PATH))
-dump(lr, MODEL_PATH)
+dump(SVM, MODEL_PATH)
 
 print("saving metadata to {}".format(METADATA_PATH))
 with open(METADATA_PATH,'w') as output:

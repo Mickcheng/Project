@@ -22,12 +22,12 @@ MODEL_FILE = os.environ["MODEL_FILE"]
 METADATA_FILE = os.environ["METADATA_FILE"]
 MODEL_PATH = os.path.join(MODEL_DIR, MODEL_FILE)
 METADATA_PATH = os.path.join(MODEL_DIR, METADATA_FILE)
-
-def get_sentiment(sentences):
-	# Load model
-	print("Loading model from: {}".format(MODEL_PATH))
-	lr = load(MODEL_PATH)
+# Load model
+print("Loading model from: {}".format(MODEL_PATH))
+SVM = load(MODEL_PATH)
 	# #############################################################################
+def get_sentiment(sentences):
+	
 	tokenizer = nltk.RegexpTokenizer(r"\w+")
 	text = tokenizer.tokenize(sentences.lower())
 	stopWords = stopwords.words('english')
@@ -65,10 +65,8 @@ def get_sentiment(sentences):
 	# #############################################################################
 	# Run inference
 	print("Scoring observations...")
-	y_pred = lr.predict(sentences_tfidf)
+	y_pred = SVM.predict(sentences_tfidf)
 	return (y_pred)
-	
-
 
 @app.route('/')
 def index():
@@ -77,6 +75,9 @@ def index():
 		
 	
 	return render_template("index.html")
+	
+
+
 
 @app.route('/result', methods=['POST'])	
 def sent():

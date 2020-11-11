@@ -1,11 +1,11 @@
 FROM python:3.6
 
 WORKDIR C:/
-RUN mkdir ./dataproject
-RUN mkdir ./dataproject/model
+RUN mkdir ./dataprojects
+RUN mkdir ./dataprojects/model
 
-ENV MODEL_DIR=/C:/dataproject/model/
-ENV MODEL_FILE=lr.joblib
+ENV MODEL_DIR=/C:/dataprojects/model/
+ENV MODEL_FILE=SVM.joblib
 ENV METADATA_FILE =metadata.json
 
 ENV FLASK_APP=app.py
