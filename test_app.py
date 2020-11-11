@@ -10,11 +10,10 @@ class FlaskTests(unittest.TestCase):
 		self.assertEqual(responce.status_code, 200)		
 		
 	def test_get_sentiment(self):
-		self.params = " un texte "
-		self.assertEqual(get_sentiment("un texte"), "neutre")	
+		self.assertEqual(get_sentiment("how are you?"), "neutral")	
 	
 	def test_sent(self):
-		params = {'sentences': 'Positive'}
+		params = {'sentences': 'positive'}
 		responce = requests.get('http://localhost:5000',data=params)
 		self.assertEqual(responce.status_code, 200)
 		
