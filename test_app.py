@@ -3,7 +3,19 @@ import os
 import requests
 
 
+
 class FlaskTests(unittest.TestCase):
+	
+	def setUp(self):
+		os.environ['NO_PROXY'] = '0.0.0.0'
+		self.sentence = {
+		
+			'positif_sentence': 'its beautiful',
+			'negative_sentence':'i hate this game',
+			'neutral_sentence':'how are you ?'
+		}
+	def tearDown(self):
+		pass
 		
 	def test_index(self):
 		responce = requests.get('http://localhost:5000')
